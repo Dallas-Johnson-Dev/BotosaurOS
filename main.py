@@ -31,5 +31,4 @@ async def on_message(message):
     return
 
 
-#client.accept_invite('https://discord.gg/8ccTG')
 client.run(username,password)
