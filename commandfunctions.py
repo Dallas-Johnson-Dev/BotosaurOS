@@ -1,6 +1,7 @@
 import random
+import main #THIS IS GROSS DONT DO THIS!!
 
-from command import command
+from command import command, admincommand
 
 
 def reformatArrayFromString(string):
@@ -107,6 +108,28 @@ def wtf(params):
 def lewd(params):
     return "http://giphy.com/gifs/face-lenny-Hot2b4Wn3aHwk"
 
+def likeicare(params):
+    return "https://cdn.discordapp.com/attachments/209509254204358657/211671021806157824/fitin_irish.gif"
+
+def commandstats(params):
+    statstring = ""
+    print(type(params))
+    print(params)
+    try:
+        if not params in cmdtable.keys():
+            return "That command could not be found! Please use ~help for a list of current commands."
+        statstring = "Executors since last uptime:\n"
+        print(cmdtable[params].getexecutorlog())
+        for x in cmdtable[params].getexecutorlog():
+            statstring = statstring + str(x.getname()) + "\n"
+        return statstring
+    except TypeError:
+        return "Something went wrong with your command! Did you use a string?"
+
+'''async def mute(params):
+    for x in main.client.servers:
+        for y in x.members:'''
+
 
 '''
 TODO: Advice command
@@ -135,6 +158,8 @@ saltycmd = command().setcategory("fun").setfunction(salty).setdescription(
     "Usage: ~salty\nThe sodium levels in this room are rising!")
 wtfcmd = command().setcategory("fun").setfunction(wtf).setdescription("Usage: ~wtf\nWhat the fuck?")
 lewdcmd = command().setcategory("fun").setfunction(lewd).setdescription("Usage: ~lewd\nSomeone said something dirty ;D")
+likeicarecmd = command().setcategory("fun").setfunction(likeicare).setdescription("Usage: ~likeicare\nSee if I care.")
+commandstatscmd = command().setcategory("administration").setfunction(commandstats).setdescription("Usage: ~commandstats command\nDisplays users of the command since last uptime, as well as the time of use.")
 
 cmdtable = {
     "~showhelp": showhelpcmd,
@@ -149,5 +174,8 @@ cmdtable = {
     "~shame": shamecmd,
     "~salty": saltycmd,
     "~wtf": wtfcmd,
-    "~lewd": lewdcmd
+    "~lewd": lewdcmd,
+    "~likeicare": likeicarecmd,
+    #Administration commands go below here
+    "~commandstats": commandstatscmd
 }

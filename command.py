@@ -1,12 +1,13 @@
 class command:
     function = None
-    isprivileged = False  # False by default, change to true to invoke a privileged execution method.
-    permissions = []
     executor = None
     executorlog = []
     description = ""
     output = ""
     category = ""
+
+    def __init__(self):
+        executorlog = []
 
     def logexecution(self, user, time):
         self.executorlog.append(logentry().setname(user).settime(time))
@@ -14,7 +15,6 @@ class command:
     def execute(self, parameters, user, time=""):
         self.logexecution(user, time)
         self.setexecutor(user)
-        # Disable PM bool for now, we may not actually need to use it.
         self.output = output().setcontent(self.function(parameters))
         return self.output
 
@@ -62,6 +62,15 @@ class command:
     def setcategory(self, cat):
         self.category = cat
         return self
+
+
+class admincommand(command):
+    permissions = ["Dragonsire21#1223"]
+
+    def execute(self, parameters, user, time=""):
+        if user not in self.permissions():
+            return output().setcontent("You do not have permission to do that!")
+        self.execute(parameters, user, time)
 
 
 class logentry:
