@@ -32,4 +32,3 @@ async def on_message(message):
 
 
 #client.run(username,password)
-client.run("daljohns@nmu.edu","fireclaw12!")
