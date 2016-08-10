@@ -9,8 +9,8 @@ client = discord.Client()
 runner = command.commandrunner(commandfunctions.cmdtable)
 currentChannel = ""
 
-username = input("Email: ")
-password = input("Password: ")
+#username = input("Email: ")
+#password = input("Password: ")
 
 
 @client.event
@@ -31,4 +31,5 @@ async def on_message(message):
     return
 
 
-client.run(username,password)
+#client.run(username,password)
+client.run("daljohns@nmu.edu","fireclaw12!")
