@@ -1,10 +1,15 @@
 import random
-import main #THIS IS GROSS DONT DO THIS!!
 
 from command import command, admincommand
+from fileio import filehandler
+
+advicelist = []
+
+with open("advice.txt", "r") as f:
+    advicelist = f.read().splitlines()
 
 
-def reformatArrayFromString(string):
+def reformatarrayfromstring(string):
     stripchars = '[]\''
     formattedstring = string
     for char in stripchars:
@@ -30,7 +35,7 @@ TODO: Possibly implement string returns to remove the need for adding the bot an
 '''
 
 
-# We won't modify how showhelp works for now.
+
 def showHelp(params):
     helpString = 'Please run ~help fun | general | sprint to see a list of related commands.\n'
     helpString = helpString + "Use ~help \"command name\" to get a brief description of what it does."
@@ -108,28 +113,20 @@ def wtf(params):
 def lewd(params):
     return "http://giphy.com/gifs/face-lenny-Hot2b4Wn3aHwk"
 
+
 def likeicare(params):
     return "https://cdn.discordapp.com/attachments/209509254204358657/211671021806157824/fitin_irish.gif"
 
-def commandstats(params):
-    statstring = ""
-    print(type(params))
-    print(params)
-    try:
-        if not params in cmdtable.keys():
-            return "That command could not be found! Please use ~help for a list of current commands."
-        statstring = "Executors since last uptime:\n"
-        print(cmdtable[params].getexecutorlog())
-        for x in cmdtable[params].getexecutorlog():
-            statstring = statstring + str(x.getname()) + "\n"
-        return statstring
-    except TypeError:
-        return "Something went wrong with your command! Did you use a string?"
 
-'''async def mute(params):
-    for x in main.client.servers:
-        for y in x.members:'''
-
+def advice(params):
+    advicestring = ""
+    # is our params empty? If so then don't append anything, else append the string in params.
+    if params is not "":
+        advicestring = "{0}, ".format(params)
+    # choose our string from the list randomly
+    advicestring = advicestring + advicelist[random.randint(0, len(advicelist)-1)]
+    # return the string formatted with params at the beginning.
+    return advicestring
 
 '''
 TODO: Advice command
@@ -159,7 +156,8 @@ saltycmd = command().setcategory("fun").setfunction(salty).setdescription(
 wtfcmd = command().setcategory("fun").setfunction(wtf).setdescription("Usage: ~wtf\nWhat the fuck?")
 lewdcmd = command().setcategory("fun").setfunction(lewd).setdescription("Usage: ~lewd\nSomeone said something dirty ;D")
 likeicarecmd = command().setcategory("fun").setfunction(likeicare).setdescription("Usage: ~likeicare\nSee if I care.")
-commandstatscmd = command().setcategory("administration").setfunction(commandstats).setdescription("Usage: ~commandstats command\nDisplays users of the command since last uptime, as well as the time of use.")
+advicecmd = command().setcategory("fun").setfunction(advice).setdescription("Usage: ~advice (optional)name\nSometimes we all need a little advice to help us out!")
+
 
 cmdtable = {
     "~showhelp": showhelpcmd,
@@ -176,6 +174,7 @@ cmdtable = {
     "~wtf": wtfcmd,
     "~lewd": lewdcmd,
     "~likeicare": likeicarecmd,
+    "~advice": advicecmd
     #Administration commands go below here
-    "~commandstats": commandstatscmd
 }
+

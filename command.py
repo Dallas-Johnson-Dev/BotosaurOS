@@ -12,7 +12,7 @@ class command:
     def logexecution(self, user, time):
         self.executorlog.append(logentry().setname(user).settime(time))
 
-    def execute(self, parameters, user, time=""):
+    def execute(self, client, parameters, user, time=""):
         self.logexecution(user, time)
         self.setexecutor(user)
         self.output = output().setcontent(self.function(parameters))
@@ -99,6 +99,7 @@ class logentry:
 class output:
     isPM = False
     content = ""
+    clientcommand = None
 
     def __init__(self, pm=False, content=""):
         self.isPM = pm
@@ -128,7 +129,7 @@ class commandrunner:
     def __init__(self, commands={}):
         self.commandtable = commands
 
-    def executeFunction(self, message):
+    def executeFunction(self, client, message):
         command = message.content.split(' ')[0].lower()
         arguments = message.content
         arguments = arguments[len(command) + 1:len(arguments)]
@@ -148,7 +149,7 @@ class commandrunner:
                     return output().setcontent(
                         "This category does not exist! Please see ~help if you need more information.")
                 return self.printhelpcategory(arguments[0])
-        return self.commandtable[command].execute(arguments, message.author, message.timestamp)
+        return self.commandtable[command].execute(client, arguments, message.author, message.timestamp)
 
     def getcommandtable(self):
         return self.commandtable
