@@ -1,6 +1,6 @@
 import random
 
-from command import command, admincommand
+from command import command, AdminCommand
 from fileio import filehandler
 
 advicelist = []
@@ -175,6 +175,5 @@ cmdtable = {
     "~lewd": lewdcmd,
     "~likeicare": likeicarecmd,
     "~advice": advicecmd
-    #Administration commands go below here
 }
 
