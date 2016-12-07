@@ -64,13 +64,18 @@ class command:
         return self
 
 
-class admincommand(command):
-    permissions = ["Dragonsire21#1223"]
+class AdminCommand(command):
+    permlist = []
 
-    def execute(self, parameters, user, time=""):
-        if user not in self.permissions():
-            return output().setcontent("You do not have permission to do that!")
-        self.execute(parameters, user, time)
+    def __init__(self, permissions):
+        self.permlist = permissions
+
+    def adminexecute(self, client, rolelist, parameters):
+        for x in rolelist:
+            if x.name in self.permlist or len(self.permlist) < 1:
+                self.output = output().setcontent(self.function(client, parameters))
+                return self.output
+        return output().setcontent("You do not have permission to execute this command!")
 
 
 class logentry:
@@ -123,7 +128,7 @@ class output:
         return self
 
 
-class commandrunner:
+class CommandRunner:
     commandtable = {}
 
     def __init__(self, commands={}):
@@ -164,3 +169,16 @@ class commandrunner:
             if self.commandtable[x].getcategory() == category:
                 helpstring = helpstring + x + "\n"
         return output().setcontent(helpstring).setPM(True)
+
+
+class AdminCommandRunner(CommandRunner):
+    def __init__(self, commands={}):
+        self.commandtable = commands
+    def executeFunction(self, client, message, permissions):
+        admincommand = message.content.split(' ')[0].lower()
+        arguments = message.content
+        arguments = arguments[len(admincommand) + 1:len(arguments)]
+        rolelist = permissions
+        if admincommand not in self.commandtable:
+            return output().setcontent("I did not understand this command!")
+        return self.commandtable[admincommand].adminexecute(client, rolelist, arguments)
